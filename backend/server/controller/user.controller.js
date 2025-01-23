@@ -1,12 +1,13 @@
 import validator from 'validator'
 import userModel from '../model/user.model.js';
 import bcrypt from 'bcrypt'
+import errorHandler from '../middleware/err_logs/errorHandler.js';
 //! register user
 export const register=async (req,res)=>{
     const {userName,email,password}=req.body;
     
     if(!userName || !email || !password){
-        return res.status(400).json({message:"all fields requied"})
+        return errorHandler(res,400,"all fields requied")
     }
     // email validator
     if(!validator.isEmail(email)){
@@ -33,5 +34,28 @@ export const register=async (req,res)=>{
             return res.status(210).json({messge:"create",dta:user})
     }catch(err){
         return res.status(500).json({message:`server error ${err.message}`})
+    }
+}
+//! user login
+export const login = async (req,res)=>{
+    const {email,password}=req.body;
+    if(!email || !password){
+        return errorHandler(res,400,"all feilds requied")
+    }
+    try{
+        // check email valid or not
+        const isCheckEmail=await userModel.findOne({email})
+        if(!isCheckEmail){
+            return errorHandler(res,400,"enter valid email ")
+        }
+        // password check valid or not
+        const isPassword=await bcrypt.compare(password,isCheckEmail.password)
+        if(isPassword){
+            return errorHandler(res,200,"login sucessful",isCheckEmail)
+        }else{
+            return errorHandler(res,400,"please enter valid password")
+        }
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
     }
 }
