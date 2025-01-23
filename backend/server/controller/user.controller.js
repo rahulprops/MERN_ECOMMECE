@@ -2,6 +2,7 @@ import validator from 'validator'
 import userModel from '../model/user.model.js';
 import bcrypt from 'bcrypt'
 import errorHandler from '../middleware/err_logs/errorHandler.js';
+import generateToken from '../utils/generateToken.js';
 //! register user
 export const register=async (req,res)=>{
     const {userName,email,password}=req.body;
@@ -51,6 +52,7 @@ export const login = async (req,res)=>{
         // password check valid or not
         const isPassword=await bcrypt.compare(password,isCheckEmail.password)
         if(isPassword){
+            (generateToken(isCheckEmail._id,res))
             return errorHandler(res,200,"login sucessful",isCheckEmail)
         }else{
             return errorHandler(res,400,"please enter valid password")
