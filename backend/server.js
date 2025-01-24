@@ -4,6 +4,7 @@ import dbConnect from './server/database/db.js';
 import userRouter from './server/routes/user.route.js';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import productRoute from './server/routes/product.routes.js';
 
 const app=express()
 const port=process.env.PORT || 3000;
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(cookieParser())
 //! api
 app.use("/api/user",userRouter)
+app.use("/api/product",productRoute)
 //! server start
 app.listen(port,()=>{
     console.log(`server is runing on port http://localhost:${port}`)
