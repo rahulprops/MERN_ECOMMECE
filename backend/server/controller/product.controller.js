@@ -75,3 +75,16 @@ export const deleteProduct=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! find product
+export const findProduct=async (req,res)=>{
+    try{
+        const find=await productModel.find({})
+        if(find){
+            return errorHandler(res,200,"done",find)
+        }else{
+            return errorHandler(res,400,"failed product find")
+        }
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
