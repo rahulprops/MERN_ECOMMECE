@@ -61,3 +61,13 @@ export const login = async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! logout
+export const logout=async (req,res)=>{
+    try{
+      
+        (res.cookie("token","", {maxAge:0})) 
+         return errorHandler(res,200,"logout sucess")
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
