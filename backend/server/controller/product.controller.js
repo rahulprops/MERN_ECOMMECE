@@ -55,3 +55,23 @@ export const updateProduct=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! delete product
+export const deleteProduct=async (req,res)=>{
+    const {id}=req.params;
+
+    try{
+        // check id valid or not
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return errorHandler(res,400,"please enter valid id")
+        }
+       // delete product
+       const deletePro=await productModel.findByIdAndDelete(id)
+       if(deletePro){
+        return errorHandler(res,200,"delete product sucees")
+       }else{
+        return errorHandler(res,400,"delete product failed")
+       }
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
