@@ -6,6 +6,15 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Wishlist from './pages/Wishlist';
 import AddToCart from './pages/AddToCart';
+import PageNotFound from './pages/PageNotFound';
+import AdminLayout from './layout/adminLayout/AdminLayout';
+import Dashbard from './admin/Dashbard';
+import Users from './admin/pages/Users';
+import AddProduct from './admin/pages/AddProduct';
+import ListProduct from './admin/pages/ListProduct';
+import Reports from './admin/pages/Reports';
+import RequireAdmin from './layout/adminLayout/RequireAdmin';
+
 
 function App() {
   return (
@@ -21,7 +30,17 @@ function App() {
         {/* Additional Routes for Login and Register */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
+        <Route path='*' element={<PageNotFound/>} />
+
+
+         {/* admin layout */}
+         <Route path='/admin' element={<RequireAdmin><AdminLayout/></RequireAdmin>}>
+          <Route index element={<Dashbard/>}/>
+          <Route path='/admin/users' element={<Users/>}/>
+          <Route path='/admin/add-product' element={<AddProduct/>}/>
+          <Route path='/admin/list-product' element={<ListProduct/>}/>
+          <Route path='/admin/reports' element={<Reports/>}/>
+         </Route>
       </Routes>
     </BrowserRouter>
   );

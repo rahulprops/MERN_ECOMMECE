@@ -10,7 +10,7 @@ const MainLayout = () => {
       <Navbar />
       
       {/* Main Content Area */}
-      <main className="flex-1 bg-white p-4 mt-12">
+      <main className="flex-1  bg-white p-4 mt-12">
         <Outlet />
       </main>
        <div>

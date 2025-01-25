@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-
+import banner1 from '../../assets/banner/bannerecom1.avif'
+import banner2 from '../../assets/banner/bannerecom2.avif'
+import banner3 from '../../assets/banner/bannerecom3.avif'
 const MainSection = () => {
   const banners = [
-    "https://via.placeholder.com/1200x400?text=Banner+1",
-    "https://via.placeholder.com/1200x400?text=Banner+2",
-    "https://via.placeholder.com/1200x400?text=Banner+3",
+    banner1,
+     banner2,
+     banner3,
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
