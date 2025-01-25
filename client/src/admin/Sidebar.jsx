@@ -129,7 +129,20 @@ const Sidebar = () => {
                 {!collapsed && <span>Reports</span>}
               </NavLink>
             </li>
-
+             {/* orders */}
+             <li>
+              <NavLink
+                to="/admin/orders"
+                className={({ isActive }) =>
+                  `flex items-center space-x-3 ${
+                    isActive ? "text-yellow-500" : "text-gray-300"
+                  } hover:text-white`
+                }
+              >
+                <FaChartBar className="text-xl" />
+                {!collapsed && <span>orders</span>}
+              </NavLink>
+            </li>
             {/* Settings Link */}
 
             {/* Logout Link */}

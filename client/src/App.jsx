@@ -14,6 +14,7 @@ import AddProduct from './admin/pages/AddProduct';
 import ListProduct from './admin/pages/ListProduct';
 import Reports from './admin/pages/Reports';
 import RequireAdmin from './layout/adminLayout/RequireAdmin';
+import Orders from './admin/pages/Orders';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path='/admin/add-product' element={<AddProduct/>}/>
           <Route path='/admin/list-product' element={<ListProduct/>}/>
           <Route path='/admin/reports' element={<Reports/>}/>
+          <Route path='/admin/orders' element={<Orders/>}/>
          </Route>
       </Routes>
     </BrowserRouter>
