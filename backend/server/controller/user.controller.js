@@ -61,6 +61,18 @@ export const login = async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! get all user
+export const allUsers=async (req,res)=>{
+    try{
+        const users=await userModel.find({})
+        if(!users){
+            return errorHandler(res,404,"user not found")
+        }
+        return errorHandler(res,200,"users get sucess",users)
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
 //! logout
 export const logout=async (req,res)=>{
     try{
