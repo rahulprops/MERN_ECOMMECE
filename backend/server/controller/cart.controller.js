@@ -45,8 +45,36 @@ export const addtoCart=async(req,res)=>{
 
 //! fetch cart items
 export const fetchCartItems=async (req,res)=>{
+     const {userId}=req.params;
+     if(!userId){
+        return errorHandler(res,400,"user id manadatory")
+     }
     try{
-        console.log("fetchcart")
+        const cart = await cartModel.findOne({userId}).populate({
+            path:"items.productId",
+            select:"image title price salePrice"
+        })
+        if(!cart){
+            return errorHandler(res,404,"cart not found")
+        }
+        // console.log(cart)
+        const validItem=cart.items.filter(productItems=>productItems.productId)
+        // console.log(validItem)
+        if(validItem.length <cart.items.length){
+            cart.items=validItem;
+            await cart.save()
+        }
+        const populateCartItems=validItem.map(item=>({
+            productId:item.productId._id,
+            image:item.productId.image,
+            title:item.productId.title,
+            price:item.productId.price,
+            salePrice:item.productId.salePrice,
+            quantity:item.quantity
+            
+        }))
+        return errorHandler(res,200,{...cart._doc,items:populateCartItems})
+        // console.log("fetchcart")
     }catch(err){
         return errorHandler(res,500,`server error ${err.message}`)
     }
