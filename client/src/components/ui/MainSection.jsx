@@ -27,7 +27,7 @@ const MainSection = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       nextBanner();
-    }, 5000);
+    }, 1000);
 
     // Clear timeout on unmount or when currentIndex changes
     return () => clearTimeout(timer);
