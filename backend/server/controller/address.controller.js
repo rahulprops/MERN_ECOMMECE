@@ -33,3 +33,20 @@ export const fetchAddress=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! edit address
+export const editAddress=async (req,res)=>{
+    const {userId,addressId}=req.params;
+    const formData=req.body;
+    if(!userId || !addressId){
+        return errorHandler(res,400,"invaid data provided")
+    }
+    try{
+      const address=await addressModel.findOneAndUpdate({_id:addressId,userId},formData,{new:true})
+      if(!address){
+        return errorHandler(res,404,"address not found")
+      }
+      return errorHandler(res,200,"update sucessful",address)
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
