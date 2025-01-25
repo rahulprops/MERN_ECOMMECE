@@ -123,10 +123,49 @@ export const updateCartItems = async (req, res) => {
   
 
 //! delete cart items 
-export const deleteCartItems=async (req,res)=>{
-    try{
-        console.log("delete cart items")
-    }catch(err){
-        return errorHandler(res,500,`server error ${err.message}`)
+export const deleteCartItems = async (req, res) => {
+    try {
+        const { userId, productId } = req.params;
+
+        if (!userId || !productId) {
+            return errorHandler(res, 400, "Invalid data provided");
+        }
+
+        const cart = await cartModel.findOne({ userId });
+        if (!cart) {
+            return errorHandler(res, 404, "Cart not found");
+        }
+
+        // Remove the item from the cart
+        cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+
+        // If no items left in the cart, consider clearing the cart
+        if (cart.items.length === 0) {
+            cart.items = [];
+        }
+
+        await cart.save();
+
+        // Populate the cart items with product details
+        await cart.populate({
+            path: "items.productId",
+            select: "image title price salePrice"
+        });
+
+        // Format the response with populated cart items
+        const populateCartItems = cart.items.map((item) => ({
+            productId: item.productId ? item.productId._id : null,
+            image: item.productId ? item.productId.image : null,
+            title: item.productId ? item.productId.title : null,
+            price: item.productId ? item.productId.price : null,
+            salePrice: item.productId ? item.productId.salePrice : null,
+            quantity: item.quantity,
+        }));
+
+        // Return the updated cart with the populated items
+        return res.status(200).json({ ...cart._doc, items: populateCartItems });
+
+    } catch (err) {
+        return errorHandler(res, 500, `Server error: ${err.message}`);
     }
-}
+};
