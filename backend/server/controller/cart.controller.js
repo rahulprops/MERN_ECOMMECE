@@ -81,13 +81,46 @@ export const fetchCartItems=async (req,res)=>{
 }
 
 //! update cart items
-export const updateCartItems=async (req,res)=>{
-    try{
-        console.log("update cart itmes ")
-    }catch(err){
-        return errorHandler(res,500,`server error ${err.message}`)
+export const updateCartItems = async (req, res) => {
+    const { userId, productId, quantity } = req.body;
+    if (!userId || !productId || !quantity) {
+      return errorHandler(res, 400, "invalid data provided");
     }
-}
+    try {
+      const cart = await cartModel.findOne({ userId });
+      if (!cart) {
+        return errorHandler(res, 404, "cart not found");
+      }
+  
+      const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+      if (findCurrentProductIndex === -1) {
+        return errorHandler(res, 404, "cart item not found");
+      }
+  
+      cart.items[findCurrentProductIndex].quantity = quantity;
+      await cart.save();
+  
+      await cart.populate({
+        path: "items.productId",
+        select: "image title price salePrice"
+      });
+  
+      const populateCartItems = cart.items.map((item) => ({
+        productId: item.productId ? item.productId._id : null,
+        image: item.productId.image ? item.productId.image : null,
+        title: item.productId.title ? item.productId.title : null,
+        price: item.productId.price ? item.productId.price : null,
+        salePrice: item.productId.salePrice ? item.productId.salePrice : null,
+        quantity: item.quantity,
+      }));
+  
+      return res.status(200).json({ ...cart._doc, items: populateCartItems });
+      
+    } catch (err) {
+      return errorHandler(res, 500, `server error ${err.message}`);
+    }
+  };
+  
 
 //! delete cart items 
 export const deleteCartItems=async (req,res)=>{
