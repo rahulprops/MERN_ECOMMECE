@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import productRoute from "./server/routes/product.routes.js";
 import cartRouter from "./server/routes/cart.route.js";
+import addressRouter from "./server/routes/address.route.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/product", productRoute);
 app.use("/api/cart", cartRouter);
+app.use("/api/address",addressRouter)
 //! server start
 app.listen(port, () => {
   console.log(`server is runing on port http://localhost:${port}`);
