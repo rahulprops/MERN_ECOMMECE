@@ -7,13 +7,18 @@ import cookieParser from "cookie-parser";
 import productRoute from "./server/routes/product.routes.js";
 import cartRouter from "./server/routes/cart.route.js";
 import addressRouter from "./server/routes/address.route.js";
-
+import cors from 'cors'
 const app = express();
 const port = process.env.PORT || 3000;
 //! middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors({
+    origin:"http://localhost:5173",
+    methods:["GET","POST","PUT","DELETE"],
+    credentials:true
+}))
 //! api
 app.use("/api/user", userRouter);
 app.use("/api/product", productRoute);
