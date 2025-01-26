@@ -19,8 +19,36 @@ const userApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    loadUser:builder.query({
+        query:()=>({
+            url:"/user/load-user",
+            method:"GET"
+        }),
+        async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+            try {
+              const { data } = await queryFulfilled;
+              dispatch(userLogging(data)); 
+            } catch (error) {
+              console.error("Error logging in user:", error);
+              dispatch(userLogout()); 
+            }
+          },
+    }),
+    logout:builder.mutation({
+        query:()=>({
+            url:"user/logout",
+            method:"POST"
+        }),
+        async onQueryStarted(arg,{queryFulfilled,dispatch}){
+            try{
+                dispatch(userLogout())
+            }catch(err){
+                console.log(err)
+            }
+        }
+    })
   }),
 });
 
-export const { useLoginUserMutation } = userApi;
+export const { useLoginUserMutation ,useLoadUserQuery,useLogoutMutation} = userApi;
 export default userApi;

@@ -73,6 +73,22 @@ export const allUsers=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! loaduser
+export const loadUser=async (req,res)=>{
+    const userId=req.userId;
+      if(!userId){
+        return errorHandler(res,404,"userId not found")
+      }
+    try{
+           const user=await userModel.findById(userId).select("-password")
+           if(!user){
+            return errorHandler(res,404,"user not found")
+           }
+           return errorHandler(res,200,"loadUser sucess",user)
+    }catch(err){
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
 //! logout
 export const logout=async (req,res)=>{
     try{

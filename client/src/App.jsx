@@ -15,6 +15,7 @@ import ListProduct from './admin/pages/ListProduct';
 import Reports from './admin/pages/Reports';
 import RequireAdmin from './layout/adminLayout/RequireAdmin';
 import Orders from './admin/pages/Orders';
+import Filter from './pages/Filter';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route index element={<ShowMainContent />} />
           <Route path='/wishlist' element={<Wishlist/>} />
           <Route path="/addtocart" element={<AddToCart />} />
+          <Route path="/filter" element={<Filter />} />
         </Route>
 
         {/* Additional Routes for Login and Register */}

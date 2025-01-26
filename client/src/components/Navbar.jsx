@@ -1,48 +1,59 @@
 import React, { useState } from "react";
-import {
-  FaBars,
-  FaTimes,
-  FaUser,
-  FaHeart,
-  FaShoppingCart,
-} from "react-icons/fa";
+import { FaBars, FaTimes, FaUser, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
+import { useLoadUserQuery, useLogoutMutation } from "../features/apis/userApi";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const user = true;
+  const { user } = useSelector((store) => store.auth);
+  const { data, isSuccess } = useLoadUserQuery();
+  const [logout, { isSuccess: isSuccessLogout }] = useLogoutMutation();
+  const navigate = useNavigate();
 
+  console.log(user);
   const toggleUserMenu = () => setUserMenuOpen(!userMenuOpen);
+
+  // Handle logout
+  const handleLogout = async () => {
+    await logout();
+    setUserMenuOpen(false); // Close the user menu after logout
+    navigate("/"); // Navigate to the login page after logging out
+  };
 
   return (
     <nav className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="container mx-auto items-center px-4 py-2 flex justify-between">
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-600">
-          <a href="#">ShopLogo</a>
+          <Link to="/" className="flex items-center gap-1">
+            <FaHome /> E-Shop
+          </Link>
         </div>
 
         {/* Navigation Links */}
         <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
           <li>
-            <a href="#" className="hover:text-blue-600">
-              Home
-            </a>
+            <Link to="/filter?category=man" className="hover:text-blue-600">
+              man
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-600">
-              Shop
-            </a>
+            <Link to="/filter?category=women" className="hover:text-blue-600">
+              women
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-600">
-              Deals
-            </a>
+            <Link to="/filter?category=kids" className="hover:text-blue-600">
+              kids
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-blue-600">
+            <Link href="#" className="hover:text-blue-600">
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 
@@ -72,13 +83,13 @@ const Navbar = () => {
                     3
                   </span>
                 </button>
-                <button onClick={toggleUserMenu}>
+                <button onClick={toggleUserMenu} className="cursor-pointer">
                   <FaUser className="text-2xl text-gray-700 hover:text-blue-600" />
                 </button>
               </div>
             </>
           ) : (
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <button onClick={()=>navigate("/login")} className="px-4 py-2 bg-blue-600 text-white cursor-pointer rounded-md hover:bg-blue-700">
               Login
             </button>
           )}
@@ -88,26 +99,20 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-56 border border-gray-200 transition-all duration-300 ease-in-out transform scale-100">
               <ul className="py-2">
                 <li>
-                  <button className="w-full flex items-center text-left px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
-                    <span className="material-icons-outlined text-lg mr-3">
-                      person
-                    </span>
-                    <span className="font-medium">User Profile</span>
+                  <button className="w-full text-center flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
+                    <Link className="font-medium">Profile</Link>
                   </button>
                 </li>
                 <li>
-                  <button className="w-full flex items-center text-left px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
-                    <span className="material-icons-outlined text-lg mr-3">
-                      edit
-                    </span>
+                  <button className="w-full cursor-pointer flex items-center text-left px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
                     <span className="font-medium">Edit Profile</span>
                   </button>
                 </li>
                 <li>
-                  <button className="w-full flex items-center text-left px-4 py-2 hover:bg-gray-100 text-red-600 transition duration-150">
-                    <span className="material-icons-outlined text-lg mr-3 text-red-500">
-                      logout
-                    </span>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full cursor-pointer flex items-center text-left px-4 py-2 hover:bg-gray-100 text-red-600 transition duration-150"
+                  >
                     <span className="font-medium">Logout</span>
                   </button>
                 </li>
