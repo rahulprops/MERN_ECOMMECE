@@ -13,7 +13,7 @@ const Navbar = () => {
   const [logout, { isSuccess: isSuccessLogout }] = useLogoutMutation();
   const navigate = useNavigate();
 
-  console.log(user);
+  // console.log(user);
   const toggleUserMenu = () => setUserMenuOpen(!userMenuOpen);
 
   // Handle logout
@@ -77,12 +77,12 @@ const Navbar = () => {
                 <button className="relative">
                   <FaHeart className="text-2xl text-gray-700 hover:text-blue-600" />
                 </button>
-                <button className="relative">
+                <Link to="/addtocart" className="relative">
                   <FaShoppingCart className="text-2xl text-gray-700 hover:text-blue-600" />
                   <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     3
                   </span>
-                </button>
+                </Link>
                 <button onClick={toggleUserMenu} className="cursor-pointer">
                   <FaUser className="text-2xl text-gray-700 hover:text-blue-600" />
                 </button>
@@ -104,8 +104,11 @@ const Navbar = () => {
                   </button>
                 </li>
                 <li>
-                  <button className="w-full cursor-pointer flex items-center text-left px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
-                    <span className="font-medium">Edit Profile</span>
+                  <button onClick={()=>{
+                     navigate("/account")
+                     setUserMenuOpen(!userMenuOpen);
+                  }} className="w-full cursor-pointer flex items-center text-left px-4 py-2 hover:bg-gray-100 text-gray-700 transition duration-150">
+                    <span className="font-medium">Account</span>
                   </button>
                 </li>
                 <li>

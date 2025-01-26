@@ -124,6 +124,7 @@ export const findProduct=async (req,res)=>{
     try{
         const find=await productModel.find({})
         if(find){
+            
             return errorHandler(res,200,"done",find)
         }else{
             return errorHandler(res,400,"failed product find")

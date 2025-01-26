@@ -16,6 +16,8 @@ import Reports from './admin/pages/Reports';
 import RequireAdmin from './layout/adminLayout/RequireAdmin';
 import Orders from './admin/pages/Orders';
 import Filter from './pages/Filter';
+import Checkout from './pages/Checkout';
+import Account from './pages/Accout';
 
 
 function App() {
@@ -28,8 +30,10 @@ function App() {
           <Route path='/wishlist' element={<Wishlist/>} />
           <Route path="/addtocart" element={<AddToCart />} />
           <Route path="/filter" element={<Filter />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/account" element={<Account />} />
         </Route>
-
+        
         {/* Additional Routes for Login and Register */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

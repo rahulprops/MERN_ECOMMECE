@@ -4,8 +4,8 @@ import productModel from "../model/product.model.js";
 import cartModel from "../model/cart.model.js";
 
 export const addtoCart=async(req,res)=>{
-    const {userId,productId,quantity}=req.body;
-
+    const {productId,quantity}=req.body;
+      const userId=req.userId;
     if(!userId || !productId || !quantity){
         return errorHandler(res,400,"invalid data provided")
     }
@@ -45,7 +45,7 @@ export const addtoCart=async(req,res)=>{
 
 //! fetch cart items
 export const fetchCartItems=async (req,res)=>{
-     const {userId}=req.params;
+     const userId=req.userId;
      if(!userId){
         return errorHandler(res,400,"user id manadatory")
      }
@@ -82,7 +82,8 @@ export const fetchCartItems=async (req,res)=>{
 
 //! update cart items
 export const updateCartItems = async (req, res) => {
-    const { userId, productId, quantity } = req.body;
+    const { productId, quantity } = req.body;
+    const userId=req.userId;
     if (!userId || !productId || !quantity) {
       return errorHandler(res, 400, "invalid data provided");
     }
@@ -97,7 +98,7 @@ export const updateCartItems = async (req, res) => {
         return errorHandler(res, 404, "cart item not found");
       }
   
-      cart.items[findCurrentProductIndex].quantity = quantity;
+      cart.items[findCurrentProductIndex].quantity += quantity;
       await cart.save();
   
       await cart.populate({
@@ -125,8 +126,8 @@ export const updateCartItems = async (req, res) => {
 //! delete cart items 
 export const deleteCartItems = async (req, res) => {
     try {
-        const { userId, productId } = req.params;
-
+        const {productId } = req.params;
+         const userId=req.userId;
         if (!userId || !productId) {
             return errorHandler(res, 400, "Invalid data provided");
         }

@@ -7,7 +7,9 @@ import cookieParser from "cookie-parser";
 import productRoute from "./server/routes/product.routes.js";
 import cartRouter from "./server/routes/cart.route.js";
 import addressRouter from "./server/routes/address.route.js";
+import path from 'path'
 import cors from 'cors'
+
 const app = express();
 const port = process.env.PORT || 3000;
 //! middleware
@@ -19,6 +21,8 @@ app.use(cors({
     methods:["GET","POST","PUT","DELETE"],
     credentials:true
 }))
+// const imgepath=path.join("public/product")
+// app.use('/images',express.static(imgepath))
 //! api
 app.use("/api/user", userRouter);
 app.use("/api/product", productRoute);
