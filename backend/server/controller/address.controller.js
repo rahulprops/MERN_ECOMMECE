@@ -2,7 +2,8 @@ import errorHandler from "../middleware/err_logs/errorHandler.js";
 import addressModel from "../model/address.molel.js";
 //! create address
 export const createAddress = async (req, res) => {
-  const { userId, address, city, pincode, phone, notes } = req.body;
+  const { address, city, pincode, phone, notes } = req.body;
+   const userId=req.userId;
   if (!userId || !address || !city || !pincode || !phone || !notes) {
     return errorHandler(res, 400, "all feild requied");
   }
@@ -29,7 +30,7 @@ export const createAddress = async (req, res) => {
 //! fetch address
 export const fetchAddress = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId=req.userId;
     const addresss = await addressModel.find({ userId });
     if (!addresss) {
       return errorHandler(res, 404, "address not found");
@@ -41,7 +42,8 @@ export const fetchAddress = async (req, res) => {
 };
 //! edit address
 export const editAddress = async (req, res) => {
-  const { userId, addressId } = req.params;
+  const { addressId } = req.params;
+  const userId=req.userId;
   const formData = req.body;
   if (!userId || !addressId) {
     return errorHandler(res, 400, "invaid data provided");
@@ -62,7 +64,8 @@ export const editAddress = async (req, res) => {
 };
 //! delete address
 export const deleteAddress = async (req, res) => {
-  const { userId, addressId } = req.params;
+  const { addressId } = req.params;
+  const userId=req.userId;
   if (!userId || !addressId) {
     return errorHandler(res, 400, "enter valid data");
   }
