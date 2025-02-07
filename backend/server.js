@@ -9,6 +9,7 @@ import cartRouter from "./server/routes/cart.route.js";
 import addressRouter from "./server/routes/address.route.js";
 import path from 'path'
 import cors from 'cors'
+import orderRouters from "./server/routes/order.route.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,6 +29,7 @@ app.use("/api/user", userRouter);
 app.use("/api/product", productRoute);
 app.use("/api/cart", cartRouter);
 app.use("/api/address",addressRouter)
+app.use("/api/order",orderRouters)
 //! server start
 app.listen(port, () => {
   console.log(`server is runing on port http://localhost:${port}`);

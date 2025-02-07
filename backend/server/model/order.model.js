@@ -11,7 +11,7 @@ const OrderSchema=new mongoose.Schema({
             salePrice:String
         }
     ],
-    address:{
+    addressInfo:{
         addressId:String,
         address:String,
         city:String,
