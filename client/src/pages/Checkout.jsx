@@ -64,9 +64,9 @@ const Checkout = () => {
         {/* Address Section */}
         <div>
           <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
-          <div className="grid gap-4 grid-cols-2">
+          <div className="">
             <AddressCard />
-            <AddressCard />
+            
           </div>
         </div>
 
