@@ -67,3 +67,16 @@ export const getOrderDetails=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+
+//! admin order get
+export const adminGetOrder=async (req,res)=>{
+    try {
+        const orders=await orderModel.find({})
+        if(!orders.length){
+            return errorHandler(res,404,"no orders found")
+        }
+        return errorHandler(res,200,"get order sucess",orders)
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
