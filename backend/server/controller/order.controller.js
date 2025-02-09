@@ -41,7 +41,7 @@ export const createOrder = async (req, res) => {
 };
 
 //! getAllOrderByUser 
-const getAllOrderByUser=async (req,res)=>{
+export const getAllOrderByUser=async (req,res)=>{
     try {
         const {userId}=req.params;
         const order = await orderModel.find({userId})
@@ -51,6 +51,18 @@ const getAllOrderByUser=async (req,res)=>{
         }
         return errorHandler(res,200,"get sucess",order)
 
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
+export const getOrderDetails=async (req,res)=>{
+    try {
+        const {id}=req.params;
+        const order =await orderModel.findById(id)
+        if(!order){
+            return errorHandler(res,400,"order details not found")
+        }
+        return errorHandler(res,200,"get details sucess",order)
     } catch (err) {
         return errorHandler(res,500,`server error ${err.message}`)
     }
