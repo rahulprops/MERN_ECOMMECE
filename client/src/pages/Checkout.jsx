@@ -7,9 +7,13 @@ import {
 } from "../features/apis/cartApi";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa"; // Import react-icons
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
+  const {user}=useSelector((store)=>store.auth)
+  // console.log(user.data._id)
   // Fetch cart data using the API
+
   const { data: cart, isLoading, isSuccess, error } = useGetCartQuery();
   const [updateCart, { isSuccess: cartUpdateSuccess }] =
     useUpdateCartMutation();
@@ -79,9 +83,23 @@ const Checkout = () => {
       })
       // console.log(addressInfo)
     }
-    useEffect(()=>{
-      // console.log(addressInfo)
-    },[addressInfo])
+   
+
+    const handleCreateOrder=()=>{
+      const orderData={
+        userId:user.data._id,
+        cartItems:cart.map(singleCartItem=>({
+          productId:singleCartItem.productId,
+          title:singleCartItem.title,
+          image:singleCartItem.image,
+          price:singleCartItem.salePrice,
+          quantity:singleCartItem.quantity
+        })),
+        addressInfo,
+        totalAmount:calculateTotal(),
+      }
+      console.log(orderData)
+    }
   return (
     <div className="container mx-auto p-6">
       <div className="grid gap-6 grid-cols-2">
@@ -170,7 +188,7 @@ const Checkout = () => {
 
             {/* Checkout Button */}
             <div className="mt-6">
-              <button className="w-full py-3 px-10 bg-blue-600 cursor-pointer text-white rounded-lg hover:bg-blue-700">
+              <button onClick={handleCreateOrder} className="w-full py-3 px-10 bg-blue-600 cursor-pointer text-white rounded-lg hover:bg-blue-700">
                 create order
               </button>
             </div>
