@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFetchAddressQuery } from '../../features/apis/addressApi';
 
-const AddressCard = () => {
+const AddressCard = ({selectAddress}) => {
     const { data, isLoading, isError } = useFetchAddressQuery();
 
     // Handle Loading and Error States
@@ -11,7 +11,7 @@ const AddressCard = () => {
     return (
         <div className="grid grid-cols-2 gap-2">
             {data.map((address) => (
-                <div key={address._id} className="border border-gray-300 p-4 rounded-lg shadow-md bg-white">
+                <div key={address._id} onClick={()=>selectAddress(address)} className="border border-gray-300 p-4 rounded-lg shadow-md bg-white">
                     <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
                     <p><strong>Street:</strong> {address.address}</p>
                     <p><strong>City:</strong> {address.city}</p>

@@ -14,6 +14,14 @@ const Checkout = () => {
   const [updateCart, { isSuccess: cartUpdateSuccess }] =
     useUpdateCartMutation();
   const [deleteCart, { isSuccess: deleteCartSucess }] = useDeleteCartMutation();
+  const [addressInfo, setAddressInfo]=useState({
+    addressId:'',
+    address:'',
+    city:'',
+    pincode:'',
+    phone:"",
+    notes:''
+  })
 
   // Handle increment of quantity
   const incrementQuantity = (productId) => {
@@ -58,6 +66,22 @@ const Checkout = () => {
       </div>
     );
 
+    // select address
+    const selectAddress=(address)=>{
+      // console.log(address)
+      setAddressInfo({
+        addressId:address._id,
+        address:address.address,
+        city:address.city,
+        pincode:address.pincode,
+        phone:address.phone,
+        notes:address.notes
+      })
+      // console.log(addressInfo)
+    }
+    useEffect(()=>{
+      // console.log(addressInfo)
+    },[addressInfo])
   return (
     <div className="container mx-auto p-6">
       <div className="grid gap-6 grid-cols-2">
@@ -65,7 +89,7 @@ const Checkout = () => {
         <div>
           <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
           <div className="">
-            <AddressCard />
+            <AddressCard selectAddress={selectAddress} />
             
           </div>
         </div>
