@@ -80,3 +80,19 @@ export const adminGetOrder=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! update Order by admin
+export const updateOrderStatus=async (req,res)=>{
+    try {
+        const {id}=req.params;
+        const {orderStatus}=req.body;
+
+        const order=await orderModel.findById(id)
+        if(!order){
+            return errorHandler(res,404,"order not found")
+        }
+        await orderModel.findByIdAndUpdate(id,{orderStatus},{new:true})
+        return errorHandler(res,200,"update sucessful")
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
