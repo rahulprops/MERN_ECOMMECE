@@ -39,3 +39,19 @@ export const createOrder = async (req, res) => {
         return errorHandler(res, 500, `Server error: ${err.message}`);
     }
 };
+
+//! getAllOrderByUser 
+const getAllOrderByUser=async (req,res)=>{
+    try {
+        const {userId}=req.params;
+        const order = await orderModel.find({userId})
+        
+        if(!order.length){
+            return errorHandler(res,400,"no orders found ")
+        }
+        return errorHandler(res,200,"get sucess",order)
+
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+}
