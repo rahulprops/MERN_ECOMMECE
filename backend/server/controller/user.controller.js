@@ -3,6 +3,7 @@ import userModel from '../model/user.model.js';
 import bcrypt from 'bcrypt'
 import errorHandler from '../middleware/err_logs/errorHandler.js';
 import generateToken from '../utils/generateToken.js';
+import jwt from 'jsonwebtoken'
 //! register user
 export const register=async (req,res)=>{
     const {userName,email,password}=req.body;
@@ -142,6 +143,34 @@ export const resetPassword = async (req, res) => {
         }
     } catch (err) {
         // console.error("Error in resetPassword:", err);
+        return errorHandler(res, 500, "Internal server error");
+    }
+};
+
+//! refresh-token 
+export const refreshToken = async (req, res) => {
+    const userId = req.userId;
+
+    // Input validation
+    if (!userId) {
+        return errorHandler(res, 400, "User ID is required");
+    }
+
+    try {
+        // Generate a new JWT
+        const token = jwt.sign({ userId }, process.env.JWT, { expiresIn: "5d" });
+
+        // Set the token as an HTTP-only cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+           
+            maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days
+        });
+
+        // Return success response
+        return errorHandler(res, 200, "Refresh token generated successfully");
+    } catch (err) {
+        console.error("Error in refreshToken:", err);
         return errorHandler(res, 500, "Internal server error");
     }
 };
