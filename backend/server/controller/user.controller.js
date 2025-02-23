@@ -99,3 +99,49 @@ export const logout=async (req,res)=>{
         return errorHandler(res,500,`server error ${err.message}`)
     }
 }
+//! reset-password
+export const resetPassword = async (req, res) => {
+    const userId = req.userId;
+    const { oldPassword, newPassword } = req.body;
+
+    // Input validation
+    if (!oldPassword || !newPassword) {
+        return errorHandler(res, 400, "oldPassword and newPassword are required");
+    }
+
+    try {
+        // Find user by ID
+        const user = await userModel.findById(userId).select("password");
+        if (!user) {
+            return errorHandler(res, 404, "User not found");
+        }
+
+        // Verify old password
+        const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordValid) {
+            return errorHandler(res, 400, "Invalid old password");
+        }
+
+        // Check if new password is the same as old password
+        if (oldPassword === newPassword) {
+            return errorHandler(res, 400, "New password must be different from the old password");
+        }
+
+        // Hash new password
+        const newPasswordHash = await bcrypt.hash(newPassword, 12);
+
+        // Update user's password
+        const updatedUser = await userModel.findByIdAndUpdate(
+            userId,
+            { $set: { password: newPasswordHash } },
+            { new: true }
+        );
+
+        if (updatedUser) {
+            return errorHandler(res, 200, "Password updated successfully");
+        }
+    } catch (err) {
+        // console.error("Error in resetPassword:", err);
+        return errorHandler(res, 500, "Internal server error");
+    }
+};
